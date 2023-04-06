@@ -1,15 +1,16 @@
 import glob
 import os
 import random
-
 import ctypes
+
+from pystray import MenuItem as item
+import pystray
+from PIL import Image
 
 from EmptyWallpaperFile import EmptyWallpaperFile
 
-
 def relative_path_to_absolute_path(relative_path):
     return os.path.abspath(relative_path)
-
 
 def get_fake_wallpaper():
     fake_wallpapers = glob.glob("./assets/fake/*")
@@ -21,7 +22,6 @@ def get_fake_wallpaper():
 
     return wallpaper
 
-
 def get_real_wallpaper():
     real_wallpapers = glob.glob("./assets/real/*")
 
@@ -31,7 +31,6 @@ def get_real_wallpaper():
     wallpaper = random.choice(real_wallpapers)
 
     return wallpaper
-
 
 def setup_wallpaper(wallpaper_path):
     abs_path = relative_path_to_absolute_path(wallpaper_path)
@@ -55,5 +54,18 @@ def show_real_background():
 
     setup_wallpaper(wallpaper)
 
+def action():
+    print("Hello World")
+
 if __name__ == '__main__':
     reset_background()
+
+    edcanIc = "./res/icon.png"
+
+    image = Image.open(edcanIc)
+    menu = (
+        item('Fake Wallpaper', reset_background),
+        item('Real Wallpaper', show_real_background),
+    )
+    icon = pystray.Icon("name", image, "title", menu)
+    icon.run()
